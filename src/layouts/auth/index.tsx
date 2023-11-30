@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+// import { Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import routes from 'routes';
 
 // Chakra imports
@@ -24,7 +25,7 @@ export default function Auth() {
 				key: any
 			) => {
 				if (route.layout === '/auth') {
-					return <Route path={route.layout + route.path} component={route.component} key={key} />;
+					return <Route path={route.layout + route.path} element={<route.component/>} key={key} />;
 				} else {
 					return null;
 				}
@@ -53,11 +54,10 @@ export default function Auth() {
 					transitionTimingFunction='linear, linear, ease'>
 					{getRoute() ? (
 						<Box mx='auto' minH='100vh'>
-							<Switch>
+							<Routes>
 								{getRoutes(routes)}
-								<Redirect from='/auth' to='/auth/sign-in/default
-                  ' />
-							</Switch>
+								<Route element={<Navigate replace to="auth/sign-in/default" />} />
+							</Routes>
 						</Box>
 					) : null}
 				</Box>

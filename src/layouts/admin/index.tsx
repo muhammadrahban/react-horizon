@@ -1,24 +1,27 @@
 // Chakra imports
 import { Portal, Box, useDisclosure } from '@chakra-ui/react';
 import Footer from 'components/footer/FooterAdmin';
-// Layout components
 import Navbar from 'components/navbar/NavbarAdmin';
 import Sidebar from 'components/sidebar/Sidebar';
 import { SidebarContext } from 'contexts/SidebarContext';
 import { useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import UserReports from '../../views/admin/default';
+import Marketplace from '../../views/admin/marketplace';
+import Overview from '../../views/admin/profile';
+import DataTables from '../../views/admin/dataTables';
+// import RTL from '../../views/admin/rtl';
+import SignIn from '../../views/auth/signIn';
+
+import { Route, Routes, Navigate } from 'react-router-dom';
 import routes from 'routes';
 
-// Custom Chakra theme
 export default function Dashboard(props: { [x: string]: any }) {
 	const { ...rest } = props;
-	// states and functions
 	const [ fixed ] = useState(false);
 	const [ toggleSidebar, setToggleSidebar ] = useState(false);
-	// functions for changing the states from components
-	const getRoute = () => {
-		return window.location.pathname !== '/admin/full-screen-maps';
-	};
+	// const getRoute = () => {
+	// 	return window.location.pathname !== '/admin/full-screen-maps';
+	// };
 	const getActiveRoute = (routes: RoutesType[]): string => {
 		let activeRoute = 'Default Brand Text';
 		for (let i = 0; i < routes.length; i++) {
@@ -46,15 +49,16 @@ export default function Dashboard(props: { [x: string]: any }) {
 		}
 		return activeNavbar;
 	};
-	const getRoutes = (routes: RoutesType[]): any => {
-		return routes.map((route: RoutesType, key: any) => {
-			if (route.layout === '/admin') {
-				return <Route path={route.layout + route.path} component={route.component} key={key} />;
-			} else {
-				return null;
-			}
-		});
-	};
+	// const getRoutes = (routes: RoutesType[]): any => {
+	// 	return routes.map((route: RoutesType, key: any) => {
+	// 		console.log(route.layout + route.path);			
+	// 		if (route.layout === '/admin') {
+	// 			return <Route path={route.layout + route.path} element={<route.component/>} key={key} />;
+	// 		} else {
+	// 			return null;
+	// 		}
+	// 	});
+	// };
 	document.documentElement.dir = 'ltr';
 	const { onOpen } = useDisclosure();
 	return (
@@ -92,14 +96,18 @@ export default function Dashboard(props: { [x: string]: any }) {
 						</Box>
 					</Portal>
 
-					{getRoute() ? (
+					{/* {getRoute() ? ( */}
 						<Box mx='auto' p={{ base: '20px', md: '30px' }} pe='20px' minH='100vh' pt='50px'>
-							<Switch>
-								{getRoutes(routes)}
-								<Redirect from='/' to='/admin/default' />
-							</Switch>
+							<Routes>
+								<Route path='/admin/default' element={<UserReports />} key={1} />
+								<Route path='/admin/nft-marketplace' element={<Marketplace />} key={2} />
+								<Route path='/admin/data-tables' element={<DataTables />} key={3} />
+								<Route path='/admin/profile' element={<Overview />} key={4} />
+								<Route path='/auth/sign-in' element={<SignIn />} key={5} />
+								<Route path='/' element={<Navigate replace={true} to='/admin/default' />} key={7} />
+							</Routes>
 						</Box>
-					) : null}
+					{/* ) : null} */}
 					<Box>
 						<Footer />
 					</Box>

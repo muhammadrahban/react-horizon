@@ -7,7 +7,8 @@ import Sidebar from 'components/sidebar/Sidebar';
 import { RtlProvider } from 'components/rtlProvider/RtlProvider';
 import { SidebarContext } from 'contexts/SidebarContext';
 import { useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+// import { Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import routes from 'routes';
 
 // Custom Chakra theme
@@ -50,7 +51,7 @@ export default function Dashboard(props: { [x: string]: any }) {
 	const getRoutes = (routes: RoutesType[]): any => {
 		return routes.map((route: RoutesType, key: any) => {
 			if (route.layout === '/rtl') {
-				return <Route path={route.layout + route.path} component={route.component} key={key} />;
+				return <Route path={route.layout + route.path} element={<route.component/>} key={key} />;
 			} else {
 				return null;
 			}
@@ -95,10 +96,11 @@ export default function Dashboard(props: { [x: string]: any }) {
 
 					{getRoute() ? (
 						<Box mx='auto' p={{ base: '20px', md: '30px' }} pe='20px' minH='100vh' pt='50px'>
-							<Switch>
+							<Routes>
 								{getRoutes(routes)}
-								<Redirect from='/' to='/rtl/rtl-default' />
-							</Switch>
+								{/* <Redirect from='/' to='/rtl/rtl-default' /> */}
+								<Route path="/" element={<Navigate replace to="/home" />} />
+							</Routes>
 						</Box>
 					) : null}
 					<Box>

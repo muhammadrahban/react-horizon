@@ -7,10 +7,12 @@ import { Text, Icon } from '@chakra-ui/react';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 // Custom components
 import Card from 'components/card/Card';
+import { Value } from 'react-calendar/dist/cjs/shared/types';
 
 export default function MiniCalendar(props: { selectRange: boolean; [x: string]: any }) {
 	const { selectRange, ...rest } = props;
-	const [ value, onChange ] = useState(new Date());
+	const [value, onChange] = useState<Value>(new Date());
+
 	return (
 		<Card
 			alignItems='center'
